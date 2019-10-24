@@ -1,0 +1,41 @@
+.qu-ag-grid .ag-filter-apply-panel {
+
+    button {
+        font: 400 13.3333px Arial;
+        padding: 1px 6px;
+        border-width: 2px;
+        border-style: outset;
+        border-image: initial;
+
+        &:active {
+            border-style: inset;
+        }   
+        
+        &:focus {
+            outline: none;
+            box-sizing: border-box;
+        }
+
+    }
+
+    
+    
+}
+
+.qu-filter-date{
+    .MuiInputAdornment-root {
+            height: 2.01em ;
+    
+}
+
+}
+
+    .rs-picker-menu {
+        
+        z-index: 9999 !important;
+
+}
+
+
+
+   
