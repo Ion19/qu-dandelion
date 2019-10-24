@@ -124,7 +124,7 @@ class ExQuFilter extends React.Component {
           );
       }
 
-      if (this.state.filterKey === "country") {
+      if (this.state.filterKey === "multi-select") {
         return (  
               <ExQuMultiFilter 
               filterKey={this.state.filterKey}  
@@ -185,7 +185,7 @@ class ExQuFilter extends React.Component {
                 <em>None</em>
               </MenuItem>
               <MenuItem value="athlete">Athlete</MenuItem>
-              <MenuItem value="country">Country</MenuItem>
+              <MenuItem value="multi-select">Country</MenuItem>
               <MenuItem value="date">Date</MenuItem>
               <MenuItem value="daterange">Date Range</MenuItem>
               <MenuItem value="age">Age</MenuItem>

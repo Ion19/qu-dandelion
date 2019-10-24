@@ -121,14 +121,14 @@ class ExQuMultiFilter extends React.Component {
   state = {
     inputValue: '',
     selectedItem: [],
-    filterType:'country', 
+    filterType:'multi-select', 
   };
 
   componentDidMount(){
      
     if(this.props.data!==''){
       let filterText;
-    filterText=this.props.data.map((filterTag)=>(filterTag.filterType==='country')?(filterTag.filter):(''))
+    filterText=this.props.data.map((filterTag)=>(filterTag.filterType==='multi-select')?(filterTag.filter):(''))
   this.setState({selectedItem:filterText})
   }
 }

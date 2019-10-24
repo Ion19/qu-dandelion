@@ -55,8 +55,8 @@ class ExQuDateRange extends Component {
     
     handleOnChange=(value)=>{
        this.setState({
-           filterFrom:value[0], 
-           filterTo:value[1], 
+           filterFrom:value[0].toDateString(), 
+           filterTo:value[1].toDateString(), 
            filter:value
           
        } ,()=>console.log(this.state)
