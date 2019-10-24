@@ -40,7 +40,7 @@ class ExQuDateFilter extends PureComponent {
 
   handleDateChange = (date) => {
     this.setState({ filter: date },
-    ()=>(this.props.handleSubmitFilter(this.props.filterKey,this.state.filter._d , this.state.filterType))
+    ()=>(this.props.handleSubmitFilter(this.props.filterKey,this.state.filter._d.toDateString() , this.state.filterType))
     );
     
   }
@@ -54,7 +54,7 @@ class ExQuDateFilter extends PureComponent {
 
   <div className="qu-filter-date">
             <Typography variant="button" className={classes.divider}>Date</Typography>
-            <div className={classes.picker}>
+              <div className={classes.picker}>
               <div className={classes.divider}>
                 <MuiPickersUtilsProvider utils={MomentUtils}>
                 <KeyboardDatePicker 
