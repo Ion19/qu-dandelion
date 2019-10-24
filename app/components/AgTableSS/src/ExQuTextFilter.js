@@ -19,6 +19,8 @@ export class ExQuTextFilter extends Component {
 
     componentDidMount(){
      
+      // get the value of the filter input 
+
       if(this.props.data!==''){
         let filterText;
       filterText=this.props.data.map((filterTag)=>(filterTag.filterType==='text')?(filterTag.filter):(''))
@@ -72,4 +74,3 @@ export class ExQuTextFilter extends Component {
 
 
 export default ExQuTextFilter;
- 

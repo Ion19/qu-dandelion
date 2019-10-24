@@ -58,7 +58,7 @@ class ExQuFilterTags extends React.Component {
           return (
             <Chip
               key={index}
-              label={`${data.filter.toString()} - ${(data.filterTo.toString())} ` } 
+              label={(data.filterTo!=='')?`${data.filter.toString()} - ${(data.filterTo.toString())} ` :` ${(data.filter.toString())}`}
               onDelete={this.handleDelete(data)}
               className={classes.chip}
             />

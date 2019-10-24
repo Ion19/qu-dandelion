@@ -88,8 +88,7 @@ class ExQuFilter extends React.Component {
   handleSubmitFilter=(filterKey,filter,filterType,filterTo)=>{
     if(filter.length !== 0) {
     this.props.submitFilter(filterKey,filter,filterType,filterTo)
-    console.log(filter.length)  
-    console.log(filterKey , filter)
+
     }
     this.handleClose() 
     
@@ -155,7 +154,6 @@ class ExQuFilter extends React.Component {
             filterKey={this.state.filterKey}  
             handleSubmitFilter={this.handleSubmitFilter}
             data={this.state.data}
-
            />
             
 

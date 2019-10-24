@@ -198,13 +198,29 @@ onColumnPinned =(params)=>{
     if (filterValue !=='' || filterValue !==[]) {
 
       let filterModel = 
-      {"filterKey": filterKey,"filterType":filterType ,"type":"co","filter":filterValue,"filterTo":filterTo };
+      {"filterKey": filterKey,"filterType":filterType ,"filter":filterValue,"filterTo":filterTo };
      
      
       // this.setState({exFilter:this.state.exFilter.map((fitlerTag)=>(fitlerTag.filterType==='text')?{...fitlerTag,filter:filterValue}:{...this.state.exFilter , filterModel})}, 
       // ()=>this.onGridReady(this.params))
    
      // Set filter properties
+
+     //Edit the text filter  
+      if(filterModel.filterType==='text'){
+        console.log(true)
+        let filtered; 
+        filtered= this.state.exFilter.filter((filterTag)=>filterTag.filterType !== 'text'); 
+        console.log(filtered);
+
+        this.setState({exFilter:[...filtered ,filterModel] } , ()=>(
+          this.onGridReady(this.params)
+        ))
+      }
+
+      else {
+     
+
      this.setState({
        
        exFilter:([...this.state.exFilter , filterModel])
@@ -213,6 +229,8 @@ onColumnPinned =(params)=>{
      ,()=>(this.onGridReady(this.params))
      
      );
+    }
+    
 
   
     }
@@ -270,7 +288,7 @@ onColumnPinned =(params)=>{
             sideBar={this.state.sideBar}
             onColumnResized={this.onColumnResized}
             pagination={true}
-            paginationAutoPageSize={true}
+            paginationAutoPageSize={false}
             
             //darg and move column true or false
             // suppressMovableColumns={true}
