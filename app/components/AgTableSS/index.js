@@ -15,6 +15,16 @@ function App() {
        rowSelection="multiple"
        rowMultiSelectionWithClick 
       />
+
+      <br/>
+      <div style={{marginTop:"100px"}}></div>
+
+      <QuTableSS
+       urlCols={ColumnsData}
+       urlRows="https://raw.githubusercontent.com/ag-grid/ag-grid/master/packages/ag-grid-docs/src/olympicWinners.json" 
+       rowSelection="multiple"
+       rowMultiSelectionWithClick 
+      />
  
     </div>
   );

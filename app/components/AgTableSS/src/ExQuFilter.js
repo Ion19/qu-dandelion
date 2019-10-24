@@ -112,6 +112,16 @@ class ExQuFilter extends React.Component {
           );
       }
 
+      if (this.state.filterKey === "sport") {
+        return (  
+              <ExQuTextFilter 
+              filterKey={this.state.filterKey}  
+              handleSubmitFilter={this.handleSubmitFilter}
+              data={this.state.data}
+              />
+        );
+    }
+
       if (this.state.filterKey === "date") {
           return (  
                 <ExQuDateFilter 
@@ -185,6 +195,7 @@ class ExQuFilter extends React.Component {
                 <em>None</em>
               </MenuItem>
               <MenuItem value="athlete">Athlete</MenuItem>
+              <MenuItem value="sport">Sport</MenuItem>
               <MenuItem value="multi-select">Country</MenuItem>
               <MenuItem value="date">Date</MenuItem>
               <MenuItem value="daterange">Date Range</MenuItem>

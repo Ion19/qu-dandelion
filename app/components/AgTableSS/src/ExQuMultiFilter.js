@@ -129,7 +129,7 @@ class ExQuMultiFilter extends React.Component {
     if(this.props.data!==''){
       let filterText;
     filterText=this.props.data.map((filterTag)=>(filterTag.filterType==='multi-select')?(filterTag.filter):(''))
-  this.setState({selectedItem:filterText})
+  this.setState({selectedItem:[...filterText]})
   }
 }
 
@@ -153,12 +153,13 @@ class ExQuMultiFilter extends React.Component {
     if (selectedItem.indexOf(item) === -1) {
       selectedItem = [...selectedItem, item];
     }
+    console.log('selectedItem',this.state.selectedItem)
 
     this.setState({
       inputValue: '',
-      selectedItem,
-    });
-    console.log(selectedItem);
+      selectedItem
+    },()=>console.log('selectedItem',this.state.selectedItem)
+);
   };
 
   handleDelete = item => () => {

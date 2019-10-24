@@ -19,10 +19,7 @@ class QuTableSS extends Component {
     state = { 
       
       columnDefs:this.props.urlCols,
-      exFilter:[
-        
-      ],
-
+      exFilter:[],
       selectedRows:[],
       paginationPageSize:50,
       rowEdited :[],
@@ -201,24 +198,42 @@ onColumnPinned =(params)=>{
       {"filterKey": filterKey,"filterType":filterType ,"filter":filterValue,"filterTo":filterTo };
      
      
-      // this.setState({exFilter:this.state.exFilter.map((fitlerTag)=>(fitlerTag.filterType==='text')?{...fitlerTag,filter:filterValue}:{...this.state.exFilter , filterModel})}, 
-      // ()=>this.onGridReady(this.params))
-   
      // Set filter properties
 
      //Edit the text filter  
-      if(filterModel.filterType==='text'){
-        console.log(true)
-        let filtered; 
-        filtered= this.state.exFilter.filter((filterTag)=>filterTag.filterType !== 'text'); 
-        console.log(filtered);
+      
+     let filtered=[]; 
+      if((filterModel.filterType==='text')){
 
-        this.setState({exFilter:[...filtered ,filterModel] } , ()=>(
-          this.onGridReady(this.params)
-        ))
+        console.log('Key',filterModel.filterKey)
+
+      
+        filtered= this.state.exFilter.filter((filterTag)=>filterTag.filterKey !== filterKey);
+        this.setState({
+       
+          exFilter:([...filtered , filterModel])
+        }
+      
+        ,()=>(this.onGridReady(this.params))
+        
+        );
+         
+       
       }
 
-      else {
+      else if (filterModel.filterType==='multi-select'){
+      
+        filtered= this.state.exFilter.filter((filterTag)=>filterTag.filterType !== 'multi-select'); 
+        this.setState({
+       
+          exFilter:([...filtered , filterModel])
+        }
+      
+        ,()=>(this.onGridReady(this.params))
+        
+        ); 
+       
+      } else {  
      
 
      this.setState({
@@ -229,8 +244,8 @@ onColumnPinned =(params)=>{
      ,()=>(this.onGridReady(this.params))
      
      );
-    }
     
+      }
 
   
     }

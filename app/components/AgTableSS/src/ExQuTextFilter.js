@@ -13,7 +13,8 @@ export class ExQuTextFilter extends Component {
     state = {
       
         filterType:'text', 
-        filter:''
+        filter:'', 
+        filterKey:this.props.filterKey
     } 
     
 
@@ -23,15 +24,20 @@ export class ExQuTextFilter extends Component {
 
       if(this.props.data!==''){
         let filterText;
-      filterText=this.props.data.map((filterTag)=>(filterTag.filterType==='text')?(filterTag.filter):(''))
-    this.setState({filter:filterText})
-    }
+      filterText=this.props.data.filter((filterTag)=>(filterTag.filterKey===this.state.filterKey));
+      if (filterText.length!==0){
+        const [{filter}] = filterText 
+        this.setState({filter})
+    
+      }
+      }  
   }
   
 
  
 
   handleChange = event => {
+    console.log(event.target.value);
     this.setState({
       [event.target.name]: event.target.value,
     });
