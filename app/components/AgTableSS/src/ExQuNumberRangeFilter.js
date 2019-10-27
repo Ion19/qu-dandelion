@@ -1,5 +1,4 @@
 import React,{Component} from 'react';
-import Grid from '@material-ui/core/Grid';
 import Slider from '@material-ui/core/Slider';
 import Button from '@material-ui/core/Button';
 
@@ -17,14 +16,18 @@ class ExQuNumberRangeFilter extends Component {
    
   }
 
-//   componentDidMount(){
+  componentDidMount(){
      
-//     if(this.props.data!==''){
-//       let filterNumberRange;
-//     filterNumberRange=this.props.data.map((filterTag)=>(filterTag.filterType==='number-range')?([parseInt(filterTag.filter),parseInt(filterTag.filterTo)]):(''))
-//   this.setState({valueRange:filterNumberRange})
-//   }
-// }
+    if(this.props.data!==''){
+      let filterNumberRange;
+    filterNumberRange=this.props.data.filter((filterTag)=>(filterTag.filterType==='number-range'))
+    if (filterNumberRange.length!==0){
+      const [{filter , filterTo}] = filterNumberRange ; 
+      this.setState({valueRange:[filter,filterTo]});
+      console.log(filter , filterTo)
+  }
+}
+}
 
 
    handleChangeRange = (event,newValue) => {
@@ -40,6 +43,19 @@ class ExQuNumberRangeFilter extends Component {
 
    render(){
 
+    const marks = [
+      {
+        value: this.props.min,
+        label: this.props.min,
+      },
+     
+      {
+        value: this.props.max,
+        label: this.props.max,
+      },
+    ];
+    
+
   return (
     <>
       
@@ -49,8 +65,10 @@ class ExQuNumberRangeFilter extends Component {
             onChange={this.handleChangeRange}
             valueLabelDisplay="auto"
             aria-labelledby="range-slider"
-            max={100}
-            min={0}
+            max={this.props.max}
+            min={this.props.min}
+            valueLabelDisplay="on"
+            marks={marks}
           />
       
 

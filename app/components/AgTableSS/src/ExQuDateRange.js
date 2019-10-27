@@ -63,6 +63,18 @@ class ExQuDateRange extends Component {
        )
     }
 
+    componentDidMount(){
+      if(this.props.data!==''){
+        let filterDateRange;
+      filterDateRange=this.props.data.filter((filterTag)=>(filterTag.filterKey===this.props.filterKey))
+      if (filterDateRange.length!==0){
+        const [{filter, filterTo}] = filterDateRange;
+        this.setState({filter:[new Date(filter) , new Date(filterTo)]},()=>console.log(filterDateRange))
+        
+    }
+    }
+  }
+
 
 
     render(){

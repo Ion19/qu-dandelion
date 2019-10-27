@@ -129,11 +129,12 @@ class ExQuMultiFilter extends React.Component {
     if(this.props.data!==''){
       let filterText;
     filterText=this.props.data.filter((filterTag)=>(filterTag.filterKey===this.props.filterKey))
-  
+      if (filterText.length!==0){  
       const [{filter}] = filterText; 
       this.setState({selectedItem:[...filter]})
   console.log(filter)
   }
+}
 }
 
 

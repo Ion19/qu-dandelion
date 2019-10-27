@@ -32,8 +32,11 @@ class ExQuDateFilter extends PureComponent {
      
     if(this.props.data!==''){
       let filterDate;
-    filterDate=this.props.data.map((filterTag)=>(filterTag.filterType==='date')?(filterTag.filter):(''))
-  this.setState({filter:filterDate})
+    filterDate=this.props.data.filter((filterTag)=>(filterTag.filterKey===this.props.filterKey))
+    if (filterDate.length!==0){
+    const [{filter}]=filterDate ; 
+    this.setState({filter},()=> console.log(filter))
+    }
   }
 }
 

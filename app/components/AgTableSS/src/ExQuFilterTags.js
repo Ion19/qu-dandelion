@@ -31,8 +31,6 @@ class ExQuFilterTags extends React.Component {
       }
  
   handleDelete = data => () => {
-    // const  chipData  = this.props.data;
-    // let updatedData;
     this.setState({
         chipData:this.state.chipData.filter((tag)=>(tag.filter !== data.filter))
     },()=>(this.props.updateFilterTag(this.state.chipData)
@@ -42,6 +40,10 @@ class ExQuFilterTags extends React.Component {
  
 
   }; 
+
+  handleClick=(data)=>{
+    console.log(data)
+  }
 
   render() {
     const { classes } = this.props;
@@ -61,6 +63,7 @@ class ExQuFilterTags extends React.Component {
               label={(data.filterTo!=='') ?  `${data.filter} - ${(data.filterTo)} ` :  ` ${(data.filter)}`}
               onDelete={this.handleDelete(data)}
               className={classes.chip}
+              onClick={()=>this.handleClick(data)}
             />
           );
         })}

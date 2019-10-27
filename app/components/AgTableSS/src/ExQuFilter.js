@@ -152,6 +152,7 @@ class ExQuFilter extends React.Component {
             <ExQuDateRange 
             filterKey={this.state.filterKey}  
             handleSubmitFilter={this.handleSubmitFilter}
+            data={this.state.data}
             />
             
 
@@ -164,6 +165,8 @@ class ExQuFilter extends React.Component {
             filterKey={this.state.filterKey}  
             handleSubmitFilter={this.handleSubmitFilter}
             data={this.state.data}
+            min={0}
+            max={100}
            />
             
 

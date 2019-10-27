@@ -233,7 +233,50 @@ onColumnPinned =(params)=>{
         
         ); 
        
-      } else {  
+      }
+      
+      else if (filterModel.filterType==='Date'){
+      
+        filtered= this.state.exFilter.filter((filterTag)=>filterTag.filterType !== 'Date'); 
+        this.setState({
+       
+          exFilter:([...filtered , filterModel])
+        }
+      
+        ,()=>(this.onGridReady(this.params))
+        
+        ); 
+       
+      }
+      
+      else if (filterModel.filterType==='number-range'){
+      
+        filtered= this.state.exFilter.filter((filterTag)=>filterTag.filterType !== 'number-range'); 
+        this.setState({
+       
+          exFilter:([...filtered , filterModel])
+        }
+      
+        ,()=>(this.onGridReady(this.params))
+        
+        ); 
+       
+      }
+
+      else if (filterModel.filterType==='date-range'){
+      
+        filtered= this.state.exFilter.filter((filterTag)=>filterTag.filterType !== 'date-range'); 
+        this.setState({
+       
+          exFilter:([...filtered , filterModel])
+        }
+      
+        ,()=>(this.onGridReady(this.params))
+        
+        ); 
+       
+      }
+      else {  
      
 
      this.setState({
