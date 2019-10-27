@@ -70,9 +70,9 @@ class ExQuFilter extends React.Component {
     data:''
   }; 
 
-  handleOpen = () => {
-    this.setState({ open: true });
-  };
+  // handleOpen = () => {
+  //   this.setState({ open: true });
+  // };
 
   handleClose = () => {
     this.setState({ open: false });
@@ -204,12 +204,7 @@ class ExQuFilter extends React.Component {
               <MenuItem value="daterange">Date Range</MenuItem>
               <MenuItem value="age">Age</MenuItem>
             </Select>
-        </FormControl>
-       
-        
-       
-
-
+        </FormControl> 
     
        <Modal
           aria-labelledby="simple-modal-title"
@@ -221,14 +216,7 @@ class ExQuFilter extends React.Component {
                 
                 
                 {this.handleShowModal()}
-                    
-                
                     <br/>
-
-               
-                  
-                
-                
                 
                 </div>
         </Modal>

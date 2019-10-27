@@ -289,16 +289,11 @@ onColumnPinned =(params)=>{
      );
     
       }
-
   
     }
    
-
   }
    
-
-
-
   removeExFilterTag=(updatedFilter)=>{
     this.setState({
       exFilter:updatedFilter
@@ -319,9 +314,9 @@ onColumnPinned =(params)=>{
         height: '1500px', 
          }} 
       >
-        <ExQuFilterTags data={this.state.exFilter} updateFilterTag={this.removeExFilterTag}/>
+        <ExQuFilterTags data={this.state.exFilter} submitFilter={this.exFilterSearch} updateFilterTag={this.removeExFilterTag}/>
         <ExQuFilter data={this.state.exFilter} submitFilter={this.exFilterSearch} /> 
-    
+        
         
          {/* <button onClick={()=>this.handleSelectRowsBtn()}>
            Show Selected rows 
