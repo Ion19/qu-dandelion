@@ -1,6 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { PapperBlock } from 'dan-components';
+import { PapperBlock ,DateWidget    } from 'dan-components';
 import AgTable from '../../components/AgTableSS';
 
 class AGTable extends React.Component {
@@ -18,6 +18,10 @@ class AGTable extends React.Component {
           <meta property="twitter:description" content={description} />
         </Helmet>
         <PapperBlock title="Ag-Table" desc="Server Side Data Table">
+         <div>
+         
+           </div> 
+           
           <AgTable/>
         </PapperBlock>
       </div>

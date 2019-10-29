@@ -117,11 +117,12 @@ function getSuggestions(inputValue) {
   });
 }
 
-class ExQuMultiFilter extends React.Component {
+class ExQuMultiFilter extends React.PureComponent {
   state = {
     inputValue: '',
     selectedItem: [],
     filterType:'multi-select', 
+    filterKey:this.props.filterKey
   };
 
   componentDidMount(){

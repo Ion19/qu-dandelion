@@ -62,12 +62,13 @@ const styles = theme => ({
 
 
 
-class ExQuFilter extends React.Component {
+class ExQuFilter extends React.PureComponent {
   state = {
     open: false,
-    filter:'', 
+    filter:{}, 
     filterKey:'', 
-    data:''
+    data:'', 
+    filterValue:[]
   }; 
 
   // handleOpen = () => {
@@ -81,8 +82,23 @@ class ExQuFilter extends React.Component {
 
   handleChange = event => {
     this.setState({
-      [event.target.name]: event.target.value, open:true 
-    },()=>(console.log(this.state)));
+      [event.target.name]: event.target.value,
+      open:true,
+      filterValue:this.props.filters.filter((filterTag)=>(filterTag.filterKey===event.target.value))
+         },()=>console.log(this.state.filterValue[0]))
+
+      //    let filterValue;
+      //    filterValue=this.props.filters.filter((filterTag)=>(filterTag.filterKey===this.state.filterKey));
+      //    console.log(filterValue)  
+      //    if (filterValue.length!==0){  
+      //      const [filter] = filterValue; 
+      //      this.setState({filter},()=>console.log(this.state.filter))
+      
+      //  }
+
+
+
+          
   };
 
   handleSubmitFilter=(filterKey,filter,filterType,filterTo)=>{
@@ -94,6 +110,10 @@ class ExQuFilter extends React.Component {
     
   } 
 
+  componentDidMount(){
+    this.setState({filters:this.props.filters})
+  }
+
   componentWillReceiveProps(nextProps){
     this.setState({
       data:nextProps.data
@@ -102,30 +122,33 @@ class ExQuFilter extends React.Component {
 
 
   handleShowModal=()=>{
-    if (this.state.filterKey === "athlete") {
+    if(this.state.filterValue.length!==0){
+    const {filterType , filterKey}= this.state.filterValue[0]
+    
+    if (filterType === "text") {
           return (  
                 <ExQuTextFilter 
-                filterKey={this.state.filterKey}  
+                filterKey={filterKey}  
                 handleSubmitFilter={this.handleSubmitFilter}
                 data={this.state.data}
                 />
           );
       }
 
-      if (this.state.filterKey === "sport") {
+      if (filterType === "sport") {
         return (  
               <ExQuTextFilter 
-              filterKey={this.state.filterKey}  
+              filterKey={filterKey}  
               handleSubmitFilter={this.handleSubmitFilter}
               data={this.state.data}
               />
         );
     }
 
-      if (this.state.filterKey === "date") {
+      if (filterType === "date") {
           return (  
                 <ExQuDateFilter 
-                filterKey={this.state.filterKey}  
+                filterKey={filterKey}  
                 handleSubmitFilter={this.handleSubmitFilter} 
                 data={this.state.data}
                 />
@@ -134,10 +157,10 @@ class ExQuFilter extends React.Component {
           );
       }
 
-      if (this.state.filterKey === "multi-select") {
+      if (filterType === "multi-select") {
         return (  
               <ExQuMultiFilter 
-              filterKey={this.state.filterKey}  
+              filterKey={filterKey}  
               handleSubmitFilter={this.handleSubmitFilter} 
               data={this.state.data}
 
@@ -147,10 +170,10 @@ class ExQuFilter extends React.Component {
         );
     }
 
-    if (this.state.filterKey === "daterange") {
+    if (filterType === "date-range") {
       return (  
             <ExQuDateRange 
-            filterKey={this.state.filterKey}  
+            filterKey={filterKey}  
             handleSubmitFilter={this.handleSubmitFilter}
             data={this.state.data}
             />
@@ -159,10 +182,10 @@ class ExQuFilter extends React.Component {
       );
   }
 
-    if (this.state.filterKey === "age") {
+    if (filterType === "number-range") {
       return (  
            <ExQuNumberRangeFilter 
-            filterKey={this.state.filterKey}  
+            filterKey={filterKey}  
             handleSubmitFilter={this.handleSubmitFilter}
             data={this.state.data}
             min={0}
@@ -172,6 +195,7 @@ class ExQuFilter extends React.Component {
 
       );
   }
+}
   }
 
 
@@ -197,12 +221,13 @@ class ExQuFilter extends React.Component {
               <MenuItem disabled value={null}>
                 <em>None</em>
               </MenuItem>
-              <MenuItem value="athlete">Athlete</MenuItem>
+              {this.props.filters.map((filter,index)=>(<MenuItem key={index} value={filter.filterKey}>{filter.filterName}</MenuItem>))}
+              {/* <MenuItem value="athlete">Athlete</MenuItem>
               <MenuItem value="sport">Sport</MenuItem>
               <MenuItem value="multi-select">Country</MenuItem>
               <MenuItem value="date">Date</MenuItem>
               <MenuItem value="daterange">Date Range</MenuItem>
-              <MenuItem value="age">Age</MenuItem>
+              <MenuItem value="age">Age</MenuItem> */}
             </Select>
         </FormControl> 
     

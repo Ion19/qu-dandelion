@@ -1,4 +1,4 @@
-import React ,{Component} from 'react'; 
+import React ,{PureComponent} from 'react'; 
  
 import 'rsuite/dist/styles/rsuite-default.css'; 
 import {DateRangePicker} from 'rsuite';
@@ -10,7 +10,7 @@ import Button from '@material-ui/core/Button';
 
 
 
-class ExQuDateRange extends Component {
+class ExQuDateRange extends PureComponent {
 
     state = {
       

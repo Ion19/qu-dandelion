@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
 import TextField from '@material-ui/core/TextField';
@@ -8,7 +8,7 @@ import Button from '@material-ui/core/Button';
 
 
 
-export class ExQuTextFilter extends Component {
+export class ExQuTextFilter extends PureComponent {
 
     state = {
       

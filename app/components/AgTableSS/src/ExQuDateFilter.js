@@ -23,7 +23,7 @@ const styles = theme => ({
 class ExQuDateFilter extends PureComponent {
   state = {
     filter: Date.now(),
-    filterType:'Date'
+    filterType:'date'
     
     
   }
@@ -35,7 +35,7 @@ class ExQuDateFilter extends PureComponent {
     filterDate=this.props.data.filter((filterTag)=>(filterTag.filterKey===this.props.filterKey))
     if (filterDate.length!==0){
     const [{filter}]=filterDate ; 
-    this.setState({filter},()=> console.log(filter))
+    this.setState({filter:new Date(filter)},()=> console.log(filter))
     }
   }
 }

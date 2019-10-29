@@ -44,7 +44,7 @@ function getModalStyle() {
 
 
 
-class ExQuFilterTags extends React.Component { 
+class ExQuFilterTags extends React.PureComponent { 
 
     state={
         chipData:[],
@@ -89,7 +89,7 @@ class ExQuFilterTags extends React.Component {
   };
 
   handleShowModal=()=>{
-    if (this.state.activeTag.filterKey === "athlete") {
+    if (this.state.activeTag.filterType === "text") {
           return (  
                 <ExQuTextFilter 
                 filterKey={this.state.activeTag.filterKey}  
@@ -99,17 +99,8 @@ class ExQuFilterTags extends React.Component {
           );
       }
 
-      else if (this.state.activeTag.filterKey === "sport") {
-        return (  
-              <ExQuTextFilter 
-              filterKey={this.state.activeTag.filterKey}  
-              handleSubmitFilter={this.handleSubmitFilter}
-              data={this.state.chipData}
-              />
-        );
-    }
-
-      else if (this.state.activeTag.filterKey === "date") {
+     
+      else if (this.state.activeTag.filterType === "date") {
           return (  
                 <ExQuDateFilter 
                 filterKey={this.state.activeTag.filterKey}
@@ -121,7 +112,7 @@ class ExQuFilterTags extends React.Component {
           );
       }
 
-      else if (this.state.activeTag.filterKey === "multi-select") {
+      else if (this.state.activeTag.filterType === "multi-select") {
         return (  
               <ExQuMultiFilter 
               filterKey={this.state.activeTag.filterKey}
@@ -134,7 +125,7 @@ class ExQuFilterTags extends React.Component {
         );
     }
 
-    else if (this.state.activeTag.filterKey === "daterange") {
+    else if (this.state.activeTag.filterType === "date-range") {
       return (  
             <ExQuDateRange 
             filterKey={this.state.activeTag.filterKey}
@@ -146,7 +137,7 @@ class ExQuFilterTags extends React.Component {
       );
   }
 
-    else if (this.state.activeTag.filterKey === "age") {
+    else if (this.state.activeTag.filterType === "number-range") {
       return (  
            <ExQuNumberRangeFilter 
             filterKey= {this.state.activeTag.filterKey}
@@ -195,7 +186,6 @@ class ExQuFilterTags extends React.Component {
               onClick={()=>this.handleClick(data)}
             />
            
-         
           );
 
         })}

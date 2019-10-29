@@ -22,7 +22,7 @@ const styles = theme => ({
   },
 });
 
-class ExQuModal extends React.Component {
+class ExQuModal extends React.PureComponent {
   state = {
     open: false,
   };

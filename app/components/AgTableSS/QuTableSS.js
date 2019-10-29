@@ -13,6 +13,9 @@ import ExQuFilterTags from './src/ExQuFilterTags';
 
 
 
+
+
+
 class QuTableSS extends Component {
  
  
@@ -57,6 +60,10 @@ class QuTableSS extends Component {
     console.log('dataSource',datasource)
     
     params.api.setServerSideDatasource(datasource);
+
+    // if (this.props.qu){
+    //   this.props.qu
+    // }
     
 }
 
@@ -147,10 +154,22 @@ onColumnPinned =(params)=>{
  
   onColumnVisible=(params)=>{
     console.log("col visible",params); 
-      this.setState(
-      ({
-          columnDefs:this.state.columnDefs.map((col)=>(col.field===params.column.colDef.field)? {...col , hide:!params.visible} : {...col} )
-        }));
+
+    let colsInfo;
+
+    colsInfo=params.columns;
+            
+          for (let i=0 ; i < colsInfo.length ; i++) {
+           this.setState(({
+             columnDefs : this.state.columnDefs.map((col)=>(
+           (col.field === colsInfo[i].colDef.field)? {
+            ...col , hide:!colsInfo[i].visible
+           }:
+           {...col}
+           ))
+          }))
+           
+          }
 
   
       console.log(this.state.columnDefs);
@@ -235,9 +254,9 @@ onColumnPinned =(params)=>{
        
       }
       
-      else if (filterModel.filterType==='Date'){
+      else if (filterModel.filterType==='date'){
       
-        filtered= this.state.exFilter.filter((filterTag)=>filterTag.filterType !== 'Date'); 
+        filtered= this.state.exFilter.filter((filterTag)=>filterTag.filterType !== 'date'); 
         this.setState({
        
           exFilter:([...filtered , filterModel])
@@ -314,8 +333,22 @@ onColumnPinned =(params)=>{
         height: '1500px', 
          }} 
       >
-        <ExQuFilterTags data={this.state.exFilter} submitFilter={this.exFilterSearch} updateFilterTag={this.removeExFilterTag}/>
-        <ExQuFilter data={this.state.exFilter} submitFilter={this.exFilterSearch} /> 
+        <ExQuFilterTags 
+        data={this.state.exFilter} 
+        submitFilter={this.exFilterSearch} 
+        updateFilterTag={this.removeExFilterTag}
+        />
+        <ExQuFilter 
+        data={this.state.exFilter} 
+        submitFilter={this.exFilterSearch} 
+        filters={[
+          {filterKey:'athlete',filterName:"Athlete" ,filterType:"text"},
+          {filterKey:'sport',filterName:"Sport" ,filterType:"text"},
+          {filterKey:'country',filterName:"Country" ,filterType:"multi-select"},{filterKey:'year',filterName:"Year" ,filterType:"date"},
+          {filterKey:'age',filterName:"Age" ,filterType:"number-range"},
+          {filterKey:'range',filterName:"Trial Range" ,filterType:"date-range"}
+        ]}
+        /> 
         
         
          {/* <button onClick={()=>this.handleSelectRowsBtn()}>
@@ -357,7 +390,7 @@ onColumnPinned =(params)=>{
             //Edit cells
             onCellValueChanged={this.onCellValueChanged}
 
-            onColumnPinned ={this.onColumnPinned}
+            onColumnPinned={this.onColumnPinned}
 
             // onDisplayedColumnsChanged={this.onDisplayedColumnsChanged}
             onDragStopped={this.onDragStopped}
