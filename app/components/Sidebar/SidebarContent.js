@@ -128,6 +128,14 @@ class SidebarContent extends React.Component {
           }
         >
           <MainMenu loadTransition={loadTransition} dataMenu={dataMenu} toggleDrawerOpen={toggleDrawerOpen} />
+          
+          <div>
+          <MenuItem>
+            <NavLink to="/app/ag-table" className={classNames(classes.brand, classes.brandBar, turnDarker && classes.darker)}>
+              Qu Ag-Table
+            </NavLink>
+          </MenuItem>
+          </div>
         </div>
       </div>
     );

@@ -114,9 +114,11 @@ class MainMenuBig extends React.Component { // eslint-disable-line
           >
             { item.name }
           </ListSubheader>
+          
         );
       }
       return (
+        <>
         <ListItem
           key={index.toString()}
           button
@@ -135,18 +137,24 @@ class MainMenuBig extends React.Component { // eslint-disable-line
             primary={item.name}
           />
         </ListItem>
+        
+        </>
       );
     });
 
     const renderChildMenu = () => {
       if (selectedMenu.length < 1) {
         return (
+          <>
           <List dense className={classes.fixedWrap}>
             {currentMenu.length > 0 ? getChildMenu(currentMenu[0].child) : ''}
           </List>
+    
+          </>
         );
       }
       return (
+        <>
         <List
           dense
           className={
@@ -159,6 +167,8 @@ class MainMenuBig extends React.Component { // eslint-disable-line
         >
           {getChildMenu(selectedMenu)}
         </List>
+       
+        </>
       );
     };
 

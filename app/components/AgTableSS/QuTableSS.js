@@ -13,9 +13,6 @@ import ExQuFilterTags from './src/ExQuFilterTags';
 
 
 
-
-
-
 class QuTableSS extends Component {
  
  
@@ -24,12 +21,13 @@ class QuTableSS extends Component {
       columnDefs:this.props.urlCols,
       exFilter:[],
       selectedRows:[],
-      paginationPageSize:50,
+      paginationPageSize: 10,
       rowEdited :[],
+      updatedColumns:this.props.urlCols,
       defaultColDef: { 
-
     }
 }
+
 
 
 
@@ -61,130 +59,155 @@ class QuTableSS extends Component {
     
     params.api.setServerSideDatasource(datasource);
 
-    // if (this.props.qu){
-    //   this.props.qu
-    // }
-    
-}
-
-
-  
-  onColumnResized=(e)=> {
-    console.log("event of column resized",e);
-    
-    let colsInfo;
-
-    colsInfo=e.columns;
-            
-          for (let i=0 ; i < colsInfo.length ; i++) {
-           this.setState(({
-             columnDefs : this.state.columnDefs.map((col)=>(
-           (col.field === colsInfo[i].colDef.field)? {
-            ...col , width:colsInfo[i].actualWidth
-           }:
-           {...col}
-           ))
-          }))
-           
-          }
-    
-  }
-  
-    onColumnMoved=(params)=>{
-      console.log('colum moved' , params)
-
-
-      let oldIndex;
-      let newIndex;
+    if (this.props.exQuSpecialFns){
       
-     
-           
-      oldIndex=(params.column!==null)?(this.state.columnDefs.findIndex((col)=>(col.field===params.column.colDef.field))):""; 
-      newIndex=params.toIndex; 
+      this.props.exFns.map((fun)=>(fun.type==="onGridReady")?
+      (fun.fns.map((fn)=>fn())):null)
+  }
+    
+    }
 
-      console.log(oldIndex , newIndex)
-        
-      const {columnDefs} = this.state ;
+    //Fetch Rows Data
+    
+    onLoadData=()=>{
+  const datasource = {
+       
+    getRows: (params) => {
+      
+        console.log('params of getRows',params) ; 
+       const {exFilter}=this.state;
+       const {urlRows} = this.props;
+       
+       
+      axios.get(urlRows,{
+      params:[params.request ,{exFilter}]
+       
+})
+  .then(((res) => res.data))
+  .then(data => params.successCallback(data))
 
-      this.columns_move(columnDefs,oldIndex,newIndex); 
+  .catch (err=>console.log(err))
+    }
+};
+console.log('dataSource',datasource)
 
-      console.log(this.state.columnDefs)
+this.params.api.setServerSideDatasource(datasource)
 
     }
+
+    // post updated Coldefs props
+
+    handleUpdateColumnDefState=()=>{
+      // console.log(this.params)
+      // console.log(this.params.columnApi.getColumnState())	
+      axios.post('./colData.json',{
+        columnDefs:(this.params.columnApi.getColumnState())
+      })
+      .then((res)=>console.log(res))
+      .then(console.log(this.params.columnApi.getColumnState()))
+      .catch((err)=>console.log(err))
+  
+    }
+  
+
+    // column Resized
+
+    onColumnResized=(e)=> {
+      if (this.props.upDateColumnsDefs) {
+  
+          
+          if(e.finished){
+          
+          this.handleUpdateColumnDefState()
+
+          if (this.props.exQuSpecialFns){
       
-    columns_move=(columns, oldIndex, newIndex)=> {
-      
-      columns.splice(newIndex, 0, columns.splice(oldIndex, 1)[0]);
-      return (columns,
-      this.setState({
-        columnDefs:columns
-      }))
-;
-  };  
+            this.props.exFns.map((fun)=>(fun.type==="onColumnResized")?
+            (fun.fns.map((fn)=>fn())):null)
+        }
+        }
+
+         
     
-  // edit Row Table Cell 
-
-  onCellValueChanged= (params)=> {
-    const {rowIndex , oldValue , newValue , data  } =params; 
-    const {field} = params.column.colDef;
-    this.setState((state)=>({
-      rowEdited:[...state.rowEdited , {rowIndex , oldValue , newValue , data ,field}  ]
-    })
-    )
-    // console.log(params)
-    // console.log(this.state.rowEdited)
-    // this.onGridReady(params)
-}
-
-
-onDisplayedColumnsChanged =(params)=>{
-  console.log("DisplayedColumnsChanged",params)
-}
-
-
-
-onColumnPinned =(params)=>{
-  console.log("pinned params",params);
-  this.setState(
-    ({
-      columnDefs:this.state.columnDefs.map((col)=>(col.field===params.column.colDef.field)? {...col , pinned:params.pinned} : {...col} )
-    }));
-    console.log(this.state.columnDefs)
   }
+    }
+
+    // pin columns
+
+    onColumnPinned =()=>{
+      if (this.props.upDateColumnsDefs) {
+          this.handleUpdateColumnDefState()
+
+          if (this.props.exQuSpecialFns){
+      
+            this.props.exFns.map((fun)=>(fun.type==="onColumnPinned")?
+            (fun.fns.map((fn)=>fn())):null)
+            }
+
+          
+      }
+    
+    }
+
+    // Columns Visiblity
  
-  onColumnVisible=(params)=>{
-    console.log("col visible",params); 
+    onColumnVisible=()=>{
+      if (this.props.upDateColumnsDefs) {
+    this.handleUpdateColumnDefState()
+    if (this.props.exQuSpecialFns){
+      
+      this.props.exFns.map((fun)=>(fun.type==="onColumnVisible")?
+      (fun.fns.map((fn)=>fn())):null)
+      }
+      }
+    }
 
-    let colsInfo;
+    // Move Columns 
+    onColumnMoved=()=>{
+      if (this.props.upDateColumnsDefs) {
+      this.handleUpdateColumnDefState()
+      if (this.props.exQuSpecialFns){
+      
+        this.props.exFns.map((fun)=>(fun.type==="onColumnMoved")?
+        (fun.fns.map((fn)=>fn())):null)
+        }
+      }
+    }  
 
-    colsInfo=params.columns;
-            
-          for (let i=0 ; i < colsInfo.length ; i++) {
-           this.setState(({
-             columnDefs : this.state.columnDefs.map((col)=>(
-           (col.field === colsInfo[i].colDef.field)? {
-            ...col , hide:!colsInfo[i].visible
-           }:
-           {...col}
-           ))
-          }))
-           
-          }
+    // Row Selected
+    onRowSelected=(event)=>{
+    console.log(event)
+  }
+
+
+    // edit Row Table Cell 
+
+    onCellValueChanged= (params)=> {
+      const {rowIndex , oldValue , newValue , data  } =params; 
+      const {field} = params.column.colDef;
+      this.setState((state)=>({
+        rowEdited:[...state.rowEdited , {rowIndex , oldValue , newValue , data ,field}  ]
+      })
+      )
+      // console.log(params)
+      // console.log(this.state.rowEdited)
+      // this.onGridReady(params)
+    }
+
+
+    // onDisplayedColumnsChanged =(params)=>{
+    //   console.log("DisplayedColumnsChanged")
+    // }
+
 
   
-      console.log(this.state.columnDefs);
-  }
-
-  // onRowSelected=(event)=>{
-  //   console.log(event)
-  // }
-
-  onSelectionChanged=(event)=>{
-    var rowCount  = event.api.getSelectedNodes();
-    let rows = rowCount.map((row)=>({data:row.data , id:row.id}));
-    this.setState({selectedRows:rows})
+  //   // onSelectionChanged 
+  // onSelectionChanged=(event)=>{
+  //   var rowCount  = event.api.getSelectedNodes();
+  //   let rows = rowCount.map((row)=>({data:row.data , id:row.id}));
+  //   this.setState({selectedRows:rows})
     
-  }
+  // }
 
   handleSelectRowsBtn=()=>{
     console.log("Selected Rows",...this.state.selectedRows)
@@ -207,6 +230,9 @@ onColumnPinned =(params)=>{
 
     this.setState({rowEdited:[] })
   }
+
+    //
+    
 
  
 
@@ -233,14 +259,14 @@ onColumnPinned =(params)=>{
           exFilter:([...filtered , filterModel])
         }
       
-        ,()=>(this.onGridReady(this.params))
+        ,()=>(this.onLoadData())
         
         );
          
        
       }
 
-      else if (filterModel.filterType==='multi-select'){
+       if (filterModel.filterType==='multi-select'){
       
         filtered= this.state.exFilter.filter((filterTag)=>filterTag.filterType !== 'multi-select'); 
         this.setState({
@@ -248,13 +274,13 @@ onColumnPinned =(params)=>{
           exFilter:([...filtered , filterModel])
         }
       
-        ,()=>(this.onGridReady(this.params))
+        ,()=>(this.onLoadData())
         
         ); 
        
       }
       
-      else if (filterModel.filterType==='date'){
+       if (filterModel.filterType==='date'){
       
         filtered= this.state.exFilter.filter((filterTag)=>filterTag.filterType !== 'date'); 
         this.setState({
@@ -262,13 +288,13 @@ onColumnPinned =(params)=>{
           exFilter:([...filtered , filterModel])
         }
       
-        ,()=>(this.onGridReady(this.params))
+        ,()=>(this.onLoadData())
         
         ); 
        
       }
       
-      else if (filterModel.filterType==='number-range'){
+       if (filterModel.filterType==='number-range'){
       
         filtered= this.state.exFilter.filter((filterTag)=>filterTag.filterType !== 'number-range'); 
         this.setState({
@@ -276,13 +302,13 @@ onColumnPinned =(params)=>{
           exFilter:([...filtered , filterModel])
         }
       
-        ,()=>(this.onGridReady(this.params))
+        ,()=>(this.onLoadData())
         
         ); 
        
       }
 
-      else if (filterModel.filterType==='date-range'){
+       if (filterModel.filterType==='date-range'){
       
         filtered= this.state.exFilter.filter((filterTag)=>filterTag.filterType !== 'date-range'); 
         this.setState({
@@ -290,24 +316,12 @@ onColumnPinned =(params)=>{
           exFilter:([...filtered , filterModel])
         }
       
-        ,()=>(this.onGridReady(this.params))
+        ,()=>(this.onLoadData())
         
         ); 
        
       }
-      else {  
-     
-
-     this.setState({
-       
-       exFilter:([...this.state.exFilter , filterModel])
-     }
-   
-     ,()=>(this.onGridReady(this.params))
-     
-     );
     
-      }
   
     }
    
@@ -316,8 +330,34 @@ onColumnPinned =(params)=>{
   removeExFilterTag=(updatedFilter)=>{
     this.setState({
       exFilter:updatedFilter
-    },()=>(this.onGridReady(this.params)))
+    },()=>(this.onLoadData()))
   }
+
+  // onColumnEverythingChanged=(params)=>{
+  //   console.log('everything Changed',params)
+  // }
+
+ 
+//   onDisplayedColumnsChanged=(params)=>{
+
+//     if(this.props.upDateColumnsDefs){
+//     console.log('changed',params)
+//     let columns;
+//     columns=(params.columnApi.getColumnState())
+//     axios.post('./data.json',{
+//       columns
+//     })
+//     .then((res)=>console.log(res))
+//     .catch((err)=>console.log(err))
+
+//     if (this.props.exQuSpecialFns){
+      
+//       // this.props.exFns.map((fun)=>(fun.type==="onDisplayColumnChanged")?
+//       // (fun.fns.map((fn)=>fn())):null)
+//   }
+// }
+
+//   }
 
  
   
@@ -349,6 +389,8 @@ onColumnPinned =(params)=>{
           {filterKey:'range',filterName:"Trial Range" ,filterType:"date-range"}
         ]}
         /> 
+
+      
         
         
          {/* <button onClick={()=>this.handleSelectRowsBtn()}>
@@ -362,6 +404,13 @@ onColumnPinned =(params)=>{
          <button onClick={()=>this.handlePostEditedRow()} >
            Post edited Row 
          </button> */}
+         <button onClick={()=>this.onLoadData()}>
+           Load 
+         </button>
+
+         <button onClick={()=>this.handleUpdateColumnDefState()}>
+           column State
+         </button>
 
 
         <AgGridReact
@@ -373,8 +422,17 @@ onColumnPinned =(params)=>{
             onGridReady={this.onGridReady}
             sideBar={this.state.sideBar}
             onColumnResized={this.onColumnResized}
-            pagination={true}
-            paginationAutoPageSize={false}
+
+            //Pagination 
+
+            pagination={this.props.pagination}
+            // Pagination page Size "number of rows in each page" 
+            paginationPageSize={this.props.paginationPageSize}
+            // number of rows will be submitted to the get requset 
+            cacheBlockSize = {this.props.cacheBlockSize}
+            
+            // paginationAutoPageSize={false}
+            rowDragManaged={true}	
             
             //darg and move column true or false
             // suppressMovableColumns={true}
@@ -398,8 +456,14 @@ onColumnPinned =(params)=>{
              // getMainMenuItems={this.getMainMenuItems}
 
 
-            //  onRowSelected={this.onRowSelected}
+             onRowSelected={this.onRowSelected}
              onSelectionChanged={this.onSelectionChanged}
+
+             onColumnEverythingChanged={this.onColumnEverythingChanged}
+
+             onDisplayedColumnsChanged={this.onDisplayedColumnsChanged}
+
+            
 
              
 

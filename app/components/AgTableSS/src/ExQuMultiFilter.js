@@ -8,45 +8,48 @@ import Paper from '@material-ui/core/Paper';
 import MenuItem from '@material-ui/core/MenuItem';
 import Chip from '@material-ui/core/Chip'; 
 import Button from '@material-ui/core/Button';
+import {suggestData} from './suggestionData';
+import axios from 'axios';
 
 
+const suggestionList=suggestData.map((label)=>({label:label}))
+// const suggestions = [
+//   { label: 'Afghanistan' },
+//   { label: 'Aland Islands' },
+//   { label: 'Albania' },
+//   { label: 'Algeria' },
+//   { label: 'American Samoa' },
+//   { label: 'Andorra' },
+//   { label: 'Angola' },
+//   { label: 'Anguilla' },
+//   { label: 'Antarctica' },
+//   { label: 'Antigua and Barbuda' },
+//   { label: 'Argentina' },
+//   { label: 'Armenia' },
+//   { label: 'Aruba' },
+//   { label: 'Australia' },
+//   { label: 'Austria' },
+//   { label: 'Azerbaijan' },
+//   { label: 'Bahamas' },
+//   { label: 'Bahrain' },
+//   { label: 'Bangladesh' },
+//   { label: 'Barbados' },
+//   { label: 'Belarus' },
+//   { label: 'Belgium' },
+//   { label: 'Belize' },
+//   { label: 'Benin' },
+//   { label: 'Bermuda' },
+//   { label: 'Bhutan' },
+//   { label: 'Bolivia, Plurinational State of' },
+//   { label: 'Bonaire, Sint Eustatius and Saba' },
+//   { label: 'Bosnia and Herzegovina' },
+//   { label: 'Botswana' },
+//   { label: 'Bouvet Island' },
+//   { label: 'Brazil' },
+//   { label: 'British Indian Ocean Territory' },
+//   { label: 'Brunei Darussalam' },
+// ];
 
-const suggestions = [
-  { label: 'Afghanistan' },
-  { label: 'Aland Islands' },
-  { label: 'Albania' },
-  { label: 'Algeria' },
-  { label: 'American Samoa' },
-  { label: 'Andorra' },
-  { label: 'Angola' },
-  { label: 'Anguilla' },
-  { label: 'Antarctica' },
-  { label: 'Antigua and Barbuda' },
-  { label: 'Argentina' },
-  { label: 'Armenia' },
-  { label: 'Aruba' },
-  { label: 'Australia' },
-  { label: 'Austria' },
-  { label: 'Azerbaijan' },
-  { label: 'Bahamas' },
-  { label: 'Bahrain' },
-  { label: 'Bangladesh' },
-  { label: 'Barbados' },
-  { label: 'Belarus' },
-  { label: 'Belgium' },
-  { label: 'Belize' },
-  { label: 'Benin' },
-  { label: 'Bermuda' },
-  { label: 'Bhutan' },
-  { label: 'Bolivia, Plurinational State of' },
-  { label: 'Bonaire, Sint Eustatius and Saba' },
-  { label: 'Bosnia and Herzegovina' },
-  { label: 'Botswana' },
-  { label: 'Bouvet Island' },
-  { label: 'Brazil' },
-  { label: 'British Indian Ocean Territory' },
-  { label: 'Brunei Darussalam' },
-];
 
 function renderInput(inputProps) {
   const {
@@ -70,13 +73,87 @@ function renderInput(inputProps) {
   );
 }
 
-function renderSuggestion({
+
+
+
+class ExQuMultiFilter extends React.PureComponent {
+  state = {
+    inputValue: '',
+    selectedItem: [],
+    filterType:'multi-select', 
+    filterKey:this.props.filterKey, 
+    suggestions:[
+      // { label: 'Afghanistan' },
+      // { label: 'Aland Islands' },
+      // { label: 'Albania' },
+      // { label: 'Algeria' },
+      // { label: 'American Samoa' },
+      // { label: 'Andorra' },
+      // { label: 'Angola' },
+      // { label: 'Anguilla' },
+      // { label: 'Antarctica' },
+      // { label: 'Antigua and Barbuda' },
+      // { label: 'Argentina' },
+      // { label: 'Armenia' },
+      // { label: 'Aruba' },
+      // { label: 'Australia' },
+      // { label: 'Austria' },
+      // { label: 'Azerbaijan' },
+      // { label: 'Bahamas' },
+      // { label: 'Bahrain' },
+      // { label: 'Bangladesh' },
+      // { label: 'Barbados' },
+      // { label: 'Belarus' },
+      // { label: 'Belgium' },
+      // { label: 'Belize' },
+      // { label: 'Benin' },
+      // { label: 'Bermuda' },
+      // { label: 'Bhutan' },
+      // { label: 'Bolivia, Plurinational State of' },
+      // { label: 'Bonaire, Sint Eustatius and Saba' },
+      // { label: 'Bosnia and Herzegovina' },
+      // { label: 'Botswana' },
+      // { label: 'Bouvet Island' },
+      // { label: 'Brazil' },
+      // { label: 'British Indian Ocean Territory' },
+      // { label: 'Brunei Darussalam' },
+    ]
+  };
+
+  componentDidMount(){
+     
+    if(this.props.data!==''){
+      let filterText;
+    filterText=this.props.data.filter((filterTag)=>(filterTag.filterKey===this.props.filterKey))
+      if (filterText.length!==0){  
+      const [{filter}] = filterText; 
+      this.setState({selectedItem:[...filter]})
+    console.log(filter)
+  }
+}
+}
+
+ getSuggestions=(inputValue)=> {
+  let count = 0;
+
+  return this.state.suggestions.filter(suggestion => {
+    const keep = (!inputValue || suggestion.label.toLowerCase().indexOf(inputValue.toLowerCase()) !== -1) && count < 5;
+
+    if (keep) {
+      count += 1;
+    }
+
+    return keep;
+  });
+}
+
+renderSuggestion=({
   suggestion,
   index,
   itemProps,
   highlightedIndex,
   selectedItem
-}) {
+})=> {
   const isHighlighted = highlightedIndex === index;
   const isSelected = (selectedItem || '').indexOf(suggestion.label) > -1;
 
@@ -95,49 +172,6 @@ function renderSuggestion({
   );
 }
 
-renderSuggestion.propTypes = {
-  highlightedIndex: PropTypes.number.isRequired,
-  index: PropTypes.number.isRequired,
-  itemProps: PropTypes.object.isRequired,
-  selectedItem: PropTypes.string.isRequired,
-  suggestion: PropTypes.shape({ label: PropTypes.string }).isRequired,
-};
-
-function getSuggestions(inputValue) {
-  let count = 0;
-
-  return suggestions.filter(suggestion => {
-    const keep = (!inputValue || suggestion.label.toLowerCase().indexOf(inputValue.toLowerCase()) !== -1) && count < 5;
-
-    if (keep) {
-      count += 1;
-    }
-
-    return keep;
-  });
-}
-
-class ExQuMultiFilter extends React.PureComponent {
-  state = {
-    inputValue: '',
-    selectedItem: [],
-    filterType:'multi-select', 
-    filterKey:this.props.filterKey
-  };
-
-  componentDidMount(){
-     
-    if(this.props.data!==''){
-      let filterText;
-    filterText=this.props.data.filter((filterTag)=>(filterTag.filterKey===this.props.filterKey))
-      if (filterText.length!==0){  
-      const [{filter}] = filterText; 
-      this.setState({selectedItem:[...filter]})
-  console.log(filter)
-  }
-}
-}
-
 
   handleKeyDown = event => {
     const { inputValue, selectedItem } = this.state;
@@ -149,7 +183,19 @@ class ExQuMultiFilter extends React.PureComponent {
   };
 
   handleInputChange = event => {
-    this.setState({ inputValue: event.target.value });
+    this.setState({ inputValue: event.target.value }, 
+      ()=>(
+        (this.state.inputValue.length > 1 )?
+        axios.get('./datalist.json',{
+          params:[{filterKey:this.state.filterKey, filterType:this.state.filterType , query:this.state.inputValue}]
+        })
+        .then((res)=>console.log(res))
+        .then(this.setState({suggestions:suggestData.map((label)=>({label:label}))}))
+        .catch((err)=>console.log(err))
+
+        :null 
+
+      ));
   };
 
   handleChange = item => {
@@ -162,7 +208,8 @@ class ExQuMultiFilter extends React.PureComponent {
 
     this.setState({
       inputValue: '',
-      selectedItem
+      selectedItem, 
+      suggestions:[]
     },()=>console.log('selectedItem',this.state.selectedItem)
 );
   };
@@ -218,7 +265,7 @@ class ExQuMultiFilter extends React.PureComponent {
             })}
             {isOpen ? (
               <Paper className={classes.paper} square>
-                {getSuggestions(inputValue2).map((suggestion, index) => renderSuggestion({
+                {this.getSuggestions(inputValue2).map((suggestion, index) => this.renderSuggestion({
                   suggestion,
                   index,
                   itemProps: getItemProps({ item: suggestion.label }),
