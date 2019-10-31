@@ -4,6 +4,7 @@ import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 import axios from 'axios';
 import 'ag-grid-enterprise'; 
+import Button from '@material-ui/core/Button';
 import './dist/style.css';
 
 
@@ -18,18 +19,25 @@ class QuTableSS extends Component {
  
     state = { 
       
-      columnDefs:this.props.urlCols,
+      columnDefs:[],
       exFilter:[],
       selectedRows:[],
       paginationPageSize: 10,
       rowEdited :[],
       updatedColumns:this.props.urlCols,
       defaultColDef: { 
-    }
+    }, 
+    exFilterComps:[]
 }
 
 
-
+    componentDidMount(){
+      axios.get(this.props.urlCols)
+      .then((res)=>this.setState({columnDefs:res.data[0],exFilterComps:res.data[1]}))      
+      .catch((err)=>console.log(err))
+    }
+  
+  
 
     onGridReady=(params)=> { 
 
@@ -70,7 +78,7 @@ class QuTableSS extends Component {
     //Fetch Rows Data
     
     onLoadData=()=>{
-  const datasource = {
+    const datasource = {
        
     getRows: (params) => {
       
@@ -174,59 +182,47 @@ this.params.api.setServerSideDatasource(datasource)
       }
     }  
 
-    // Row Selected
+    // on Row Selected
     onRowSelected=(event)=>{
     console.log(event)
   }
 
 
+    // on Selection Row Changed 
+    onSelectionChanged=(event)=>{
+    console.log('onSelectChanged',event)
+    var rowCount  = event.api.getSelectedNodes();
+    console.log(rowCount)
+    // return array of selected rows each by rowId and rowData
+    let rows = rowCount.map((row)=>({data:row.data , id:row.id}));
+    this.setState({selectedRows:rows})
+    
+  }
+
+
+
     // edit Row Table Cell 
 
-    onCellValueChanged= (params)=> {
-      const {rowIndex , oldValue , newValue , data  } =params; 
-      const {field} = params.column.colDef;
+    onCellValueChanged =(event)=> { 
+      const {rowIndex , oldValue , value , data }=event; 
+      const {field} = event.column.colDef;
       this.setState((state)=>({
-        rowEdited:[...state.rowEdited , {rowIndex , oldValue , newValue , data ,field}  ]
-      })
+        rowEdited:[...state.rowEdited , {rowIndex , oldValue , value , data ,field}  ]
+      }),()=>console.log(this.state.rowEdited)
       )
-      // console.log(params)
-      // console.log(this.state.rowEdited)
-      // this.onGridReady(params)
+     
     }
 
 
-    // onDisplayedColumnsChanged =(params)=>{
-    //   console.log("DisplayedColumnsChanged")
-    // }
 
 
-  
-  //   // onSelectionChanged 
-  // onSelectionChanged=(event)=>{
-  //   var rowCount  = event.api.getSelectedNodes();
-  //   let rows = rowCount.map((row)=>({data:row.data , id:row.id}));
-  //   this.setState({selectedRows:rows})
-    
-  // }
-
-  handleSelectRowsBtn=()=>{
-    console.log("Selected Rows",...this.state.selectedRows)
-  }
-
-  handleEditRowsBtn=()=>{
-     console.log("Edited Rows",...this.state.rowEdited)
-  }
 
   handlePostEditedRow=()=>{
     axios.post('/row', {
       rowEdited: this.state.rowEdited
     })
-    .then((res)=> {
-      console.log(res);
-    })
-    .catch((err)=> {
-      console.log(err);
-    });
+    .then((res)=>console.log(res))
+    .catch((err)=>console.log(err))
 
     this.setState({rowEdited:[] })
   }
@@ -237,7 +233,7 @@ this.params.api.setServerSideDatasource(datasource)
  
 
   exFilterSearch=(filterKey , filterValue ,filterType ,filterTo='')=> {
-    if (filterValue !=='' || filterValue !==[]) {
+    if (filterValue.length !==0 ) {
 
       let filterModel = 
       {"filterKey": filterKey,"filterType":filterType ,"filter":filterValue,"filterTo":filterTo };
@@ -333,46 +329,29 @@ this.params.api.setServerSideDatasource(datasource)
     },()=>(this.onLoadData()))
   }
 
-  // onColumnEverythingChanged=(params)=>{
-  //   console.log('everything Changed',params)
-  // }
-
- 
-//   onDisplayedColumnsChanged=(params)=>{
-
-//     if(this.props.upDateColumnsDefs){
-//     console.log('changed',params)
-//     let columns;
-//     columns=(params.columnApi.getColumnState())
-//     axios.post('./data.json',{
-//       columns
-//     })
-//     .then((res)=>console.log(res))
-//     .catch((err)=>console.log(err))
-
-//     if (this.props.exQuSpecialFns){
-      
-//       // this.props.exFns.map((fun)=>(fun.type==="onDisplayColumnChanged")?
-//       // (fun.fns.map((fn)=>fn())):null)
-//   }
-// }
-
-//   }
-
  
   
   render() {
     
-    const {rowMultiSelectionWithClick ,rowSelection} =this.props
+    const {
+      rowMultiSelectionWithClick,
+      rowSelection,
+      pagination, 
+      paginationPageSize, 
+      cacheBlockSize
+    } =this.props
 
   
     return (
       <div 
         className="ag-theme-balham qu-ag-grid"
         style={{ 
-        height: '1500px', 
+        marginBottom:"50px",
+        height:'1000px'
+
          }} 
       >
+        <div style={{marginTop:"25px", marginBottom:"25px"}}>
         <ExQuFilterTags 
         data={this.state.exFilter} 
         submitFilter={this.exFilterSearch} 
@@ -380,18 +359,34 @@ this.params.api.setServerSideDatasource(datasource)
         />
         <ExQuFilter 
         data={this.state.exFilter} 
-        submitFilter={this.exFilterSearch} 
-        filters={[
-          {filterKey:'athlete',filterName:"Athlete" ,filterType:"text"},
-          {filterKey:'sport',filterName:"Sport" ,filterType:"text"},
-          {filterKey:'country',filterName:"Country" ,filterType:"multi-select"},{filterKey:'year',filterName:"Year" ,filterType:"date"},
-          {filterKey:'age',filterName:"Age" ,filterType:"number-range"},
-          {filterKey:'range',filterName:"Trial Range" ,filterType:"date-range"}
-        ]}
+        submitFilter={this.exFilterSearch}
+        urlMultiSuggestion="http://localhost/qu-agSuggestion/index.php" 
+        filters={this.state.exFilterComps}
+        // filters={[
+        //   {filterKey:'athlete',filterName:"Athlete" ,filterType:"text"},
+        //   {filterKey:'sport',filterName:"Sport" ,filterType:"text"},
+        //   {filterKey:'country',filterName:"Country" ,filterType:"multi-select"},
+        //   {filterKey:'year',filterName:"Year" ,filterType:"date"},
+        //   {filterKey:'age',filterName:"Age" ,filterType:"number-range"},
+        //   {filterKey:'range',filterName:"Trial Range" ,filterType:"date-range"}
+        // ]}
         /> 
+        </div>
 
       
+        <div style={{padding:"25px"}}>
+          
+         <Button style={{marginLeft:"20px"}} variant="contained" color="secondary" onClick={()=>this.onLoadData()}>
+           Load  
+         </Button>
+         
+         <Button style={{marginLeft:"20px"}} variant="contained" color="primary" onClick={()=>this.handleUpdateColumnDefState()}>
+              Update Column 
+          </Button>
+
         
+
+        </div>  
         
          {/* <button onClick={()=>this.handleSelectRowsBtn()}>
            Show Selected rows 
@@ -404,74 +399,50 @@ this.params.api.setServerSideDatasource(datasource)
          <button onClick={()=>this.handlePostEditedRow()} >
            Post edited Row 
          </button> */}
-         <button onClick={()=>this.onLoadData()}>
-           Load 
-         </button>
 
-         <button onClick={()=>this.handleUpdateColumnDefState()}>
-           column State
-         </button>
 
 
         <AgGridReact
                     
             rowModelType="serverSide"
             columnDefs={this.state.columnDefs}
-            // columnDefs={ColumnsData}
             defaultColDef={this.state.defaultColDef}
+            // load Rows on Grid Ready
             onGridReady={this.onGridReady}
-            sideBar={this.state.sideBar}
+
+
+            // column Resized
             onColumnResized={this.onColumnResized}
+            // column Moved 
+            onColumnMoved= {this.onColumnMoved}
+            // column Pinned
+            onColumnPinned={this.onColumnPinned}
+            // column Visiblity 
+            onColumnVisible={this.onColumnVisible}
+
 
             //Pagination 
-
-            pagination={this.props.pagination}
+            pagination={pagination}
             // Pagination page Size "number of rows in each page" 
-            paginationPageSize={this.props.paginationPageSize}
+            paginationPageSize={paginationPageSize}
             // number of rows will be submitted to the get requset 
-            cacheBlockSize = {this.props.cacheBlockSize}
+            cacheBlockSize = {cacheBlockSize}
             
-            // paginationAutoPageSize={false}
-            rowDragManaged={true}	
-            
-            //darg and move column true or false
-            // suppressMovableColumns={true}
-            frameworkComponents={this.state.frameworkComponents}      
-            onColumnMoved= {this.onColumnMoved}
             //pin filter menu
             suppressMenuHide = {true}
-            // floatingFilter={true}
-            //Row Selection
+           
+            //Row Selection Type {single/ multible || select on Click}
             rowSelection={rowSelection}
             rowMultiSelectWithClick={rowMultiSelectionWithClick} 
 
+            // on Row Selected 
+            onRowSelected={this.onRowSelected}
+            onSelectionChanged={this.onSelectionChanged}
+
             //Edit cells
-            onCellValueChanged={this.onCellValueChanged}
-
-            onColumnPinned={this.onColumnPinned}
-
-            // onDisplayedColumnsChanged={this.onDisplayedColumnsChanged}
-            onDragStopped={this.onDragStopped}
-            onColumnVisible={this.onColumnVisible}
-             // getMainMenuItems={this.getMainMenuItems}
-
-
-             onRowSelected={this.onRowSelected}
-             onSelectionChanged={this.onSelectionChanged}
-
-             onColumnEverythingChanged={this.onColumnEverythingChanged}
-
-             onDisplayedColumnsChanged={this.onDisplayedColumnsChanged}
-
-            
-
-             
-
-            
-
-          
-          >
-        </AgGridReact>
+            onCellValueChanged={this.onCellValueChanged}          
+          />
+        
       </div>
     );
   }

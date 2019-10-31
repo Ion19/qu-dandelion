@@ -114,10 +114,10 @@ class ExQuFilter extends React.PureComponent {
     this.setState({filters:this.props.filters})
   }
 
-  componentWillReceiveProps(nextProps){
+  componentWillReceiveProps({data}){
     this.setState({
-      data:nextProps.data
-    })
+      data
+        })
   }
 
 
@@ -163,6 +163,7 @@ class ExQuFilter extends React.PureComponent {
               filterKey={filterKey}  
               handleSubmitFilter={this.handleSubmitFilter} 
               data={this.state.data}
+              urlMultiSuggestion={this.props.urlMultiSuggestion}
 
               />
               

@@ -12,7 +12,7 @@ import {suggestData} from './suggestionData';
 import axios from 'axios';
 
 
-const suggestionList=suggestData.map((label)=>({label:label}))
+// const suggestionList=suggestData.map((label)=>({label:label}))
 // const suggestions = [
 //   { label: 'Afghanistan' },
 //   { label: 'Aland Islands' },
@@ -186,7 +186,7 @@ renderSuggestion=({
     this.setState({ inputValue: event.target.value }, 
       ()=>(
         (this.state.inputValue.length > 1 )?
-        axios.get('./datalist.json',{
+        axios.get(this.props.urlMultiSuggestion,{
           params:[{filterKey:this.state.filterKey, filterType:this.state.filterType , query:this.state.inputValue}]
         })
         .then((res)=>console.log(res))

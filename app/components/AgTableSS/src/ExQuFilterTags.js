@@ -53,11 +53,17 @@ class ExQuFilterTags extends React.PureComponent {
        
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps({data}) {
         
-          this.setState({ chipData: nextProps.data },()=>console.log(this.state.chipData)); 
+          this.setState({ chipData: data },()=>console.log(this.state.chipData)); 
           
       }
+
+      // static getDerivedStateFromProps({data}, prevState) {
+      //   if (data !== prevState.chipData) {
+      //     return ({ chipData: data }) // <- this is setState equivalent
+      //   }
+      //   }
 
      
  

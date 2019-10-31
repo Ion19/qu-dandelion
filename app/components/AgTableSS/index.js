@@ -21,10 +21,10 @@ class App extends React.Component {
   render(){
   return (
     <div className="App"> 
-         <div style={{marginBottom:"20px"}}> 
+         <div style={{marginBottom:"100px"}}> 
 
       <QuTableSS
-        urlCols={ColumnsData}
+        urlCols='http://localhost/qu-agTable/index.php'
         urlRows="https://raw.githubusercontent.com/ag-grid/ag-grid/master/packages/ag-grid-docs/src/olympicWinners.json" 
         rowSelection="multiple"
         rowMultiSelectionWithClick 
@@ -47,7 +47,8 @@ class App extends React.Component {
 
       <br/>
       <div style={{marginTop:"25px"}}></div>
-{/* 
+      <br/>
+{/*   
       <QuTableSS
        urlCols={ColumnsData}
        urlRows="https://raw.githubusercontent.com/ag-grid/ag-grid/master/packages/ag-grid-docs/src/olympicWinners.json" 

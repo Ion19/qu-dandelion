@@ -1,0 +1,107 @@
+{
+  "ColumnsData": [
+      
+      {
+          "headerName": "Athlete",
+          "field": "athlete",
+          "width": null,
+          "filter": "agTextColumnFilter",       
+          "pinned":"",
+          "hide":null,
+          "suppressMovable": true,       
+          "lockPosition": false,
+          "menuTabs": ["generalMenuTab", "filterMenuTab" ,"columnsMenuTab"], 
+          "sortable": true,
+          "editable":false,
+          "checkboxSelection":false,        
+          "resizable": false,
+          "filterParams":{
+          "applyButton":true , 
+          "clearButton":false, 
+          "filterOptions":["contains" ,"equals"]
+          }
+      },
+
+
+      {
+          "headerName": "Age",
+          "field": "age",
+          "pinned":"",
+          "hide":null,
+          "filter": "agNumberColumnFilter",
+          "suppressMovable": true
+      },
+
+
+      {
+          "headerName": "Country",
+          "field": "country",
+          "pinned":"",
+          "hide":null
+      },
+      
+
+      {
+          "headerName": "Year",
+          "field": "year", 
+          "pinned":"",
+          "hide":null,
+          "filter": "agNumberColumnFilter"   
+      },
+
+
+      {
+          "headerName": "Date",
+          "field": "date",
+          "pinned":"",
+          "hide":null,
+          "filter": "agDateColumnFilter"
+      },
+
+
+      {
+          "headerName": "Sport",
+          "field": "sport",
+          "pinned":"",
+          "hide":null,
+          "filter":"agTextColumnFilter"
+      },
+
+
+      {
+          "headerName": "Gold",
+          "field": "gold",
+          "pinned":"",
+          "hide":null,
+          "filter": "agNumberColumnFilter"
+      },
+
+
+      {
+          "headerName": "Silver",
+          "field": "silver",
+          " pinned":"",
+          " hide":null,
+          " filter": "agNumberColumnFilter"
+      },
+
+
+      {
+          "headerName": "Bronze",
+          "field": "bronze",
+          "pinned":"",
+          "hide":null,
+          "filter": "agNumberColumnFilter" 
+      },
+
+
+      {
+          "headerName": "Total",
+          "field": "total",
+          "pinned":"",
+          "hide":null,
+          "filter": "agNumberColumnFilter"
+      }
+]
+
+}
