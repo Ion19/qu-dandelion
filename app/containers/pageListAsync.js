@@ -63,4 +63,10 @@ export const Parent = Loadable({
 export const AGTable = Loadable({
   loader: () => import('./ArabicLocalizer/AGTable'),
   loading: Loading,
+}); 
+
+// add QuForms 
+export const QuForm = Loadable({
+  loader: () => import('./Pages/QuForm/QuFormPage'),
+  loading: Loading,
 });

@@ -1,5 +1,6 @@
 import React from 'react'; 
-import {ColumnsData} from './data'
+import {ColumnsData} from './data' ;
+
 
 
 import QuTableSS from './QuTableSS';
@@ -21,7 +22,14 @@ class App extends React.Component {
   render(){
   return (
     <div className="App"> 
+
+    
+
+
          <div style={{marginBottom:"100px"}}> 
+
+      
+
 
       <QuTableSS
         urlCols='http://localhost/qu-agTable/index.php'

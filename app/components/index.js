@@ -11,10 +11,20 @@ export SearchUi from './Search/SearchUi';
 // Guide
 export GuideSlider from './GuideSlider';
 // Form
-export LoginForm from './Forms/LoginForm';
-export RegisterForm from './Forms/RegisterForm';
-export ResetForm from './Forms/ResetForm';
 export Notification from './Notification/Notification';
+export MaterialDropZone from './Forms/MaterialDropZone';
+export LoginForm from './Forms/LoginForm';
+export LoginFormV2 from './Forms/LoginFormV2';
+export LoginFormV3 from './Forms/LoginFormV3';
+export RegisterForm from './Forms/RegisterForm';
+export RegisterFormV2 from './Forms/RegisterFormV2';
+export RegisterFormV3 from './Forms/RegisterFormV3';
+export ResetForm from './Forms/ResetForm';
+export LockForm from './Forms/LockForm';
+export AddressForm from './Forms/AddressForm';
+export PaymentForm from './Forms/PaymentForm';
+export Review from './Forms/Review';
+export SideReview from './Forms/SideReview';
 // Table
 export EmptyData from './Tables/EmptyData';
 // Error

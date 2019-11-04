@@ -10,7 +10,8 @@ import {
   Table,
   Error,
   NotFound,
-  AGTable 
+  AGTable, 
+  QuForm 
   
 } from '../pageListAsync';
 
@@ -27,6 +28,8 @@ class Application extends React.Component {
           <Route path="/app/page-list" component={Parent} />
           {/* Add the Ag table Router  */}
           <Route path="/app/ag-table" component={AGTable} />
+          {/* Add Qu Form */}
+          <Route path="/app/qu-form" component={QuForm} />
 
           <Route path="/app/pages/not-found" component={NotFound} />
           <Route path="/app/pages/error" component={Error} />
