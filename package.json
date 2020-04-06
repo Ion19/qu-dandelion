@@ -101,7 +101,7 @@
     "@material-ui/pickers": "^3.1.2",
     "@types/googlemaps": "^3.30.10",
     "@types/markerclustererplus": "^2.1.33",
-    "acorn": "^6.1.1",
+    "acorn": "^6.4.1",
     "ag-grid-community": "^21.2.2",
     "ag-grid-enterprise": "^21.2.2",
     "ag-grid-react": "^21.2.2",
